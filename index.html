@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borang Bersepadu REKA & GHG KKM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f8fafc; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        body { background-color: #f1f5f9; color: #334155; }
+        .section-card { @apply bg-white rounded-xl shadow-sm border border-slate-200 mb-8 overflow-hidden; }
+        .section-header { @apply px-6 py-4 border-b border-slate-200; }
+        .section-body { @apply p-6; }
+        
+        .data-table { @apply w-full border-collapse text-sm; }
+        .data-table th { @apply bg-slate-100 text-slate-700 font-semibold p-3 border border-slate-200 text-center align-middle; }
+        .data-table td { @apply p-2 border border-slate-200 align-middle; }
+        
+        .input-field { @apply w-full border border-slate-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-colors bg-white; }
+        .input-cell { @apply w-full border-none focus:ring-2 focus:ring-teal-500 rounded p-1.5 text-sm text-center outline-none bg-transparent hover:bg-slate-50 focus:bg-white transition-colors; }
+        .disabled-cell { @apply bg-slate-100 cursor-not-allowed text-slate-400; }
+        
+        .table-group-header { @apply bg-slate-50 font-bold text-slate-800 uppercase tracking-wider text-xs px-3 py-2; }
+    </style>
+</head>
+<body class="font-sans antialiased pb-16">
+
+    <!-- Header -->
+    <header class="bg-teal-800 text-white shadow-lg py-8 px-4 sm:px-6 lg:px-8 mb-10">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-center md:text-left">
+                <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight">Unified Carbon Assessment Tool (UCAT)</h1>
+                <p class="text-teal-100 mt-2 text-sm md:text-base">Borang Integrasi Data Program REKA & Blueprint Pengurusan GHG KKM</p>
+            </div>
+            <div class="bg-teal-900 px-5 py-3 rounded-lg text-sm border border-teal-700 shadow-inner flex flex-col gap-1 items-center md:items-end">
+                <span class="text-teal-300 font-medium text-xs uppercase tracking-wider">Kekerapan Laporan</span>
+                <span class="font-bold text-white text-base">Bulanan (Monthly)</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <form id="ucatForm">
+
+            <!-- MAKLUMAT ASAS & LAMPIRAN 4 (RETEN) -->
+            <section class="section-card">
+                <div class="section-header bg-slate-50">
+                    <h2 class="text-lg font-bold text-slate-800">Maklumat Asas Fasiliti (Berdasarkan Lampiran 3 & 4)</h2>
+                </div>
+                <div class="section-body grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Tarikh Laporan</label>
+                        <input type="date" name="tarikh_laporan" required class="input-field">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Bulan & Tahun Data</label>
+                        <input type="month" name="bulan_tahun" required class="input-field">
+                    </div>
+                    <div class="lg:col-span-2">
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Nama Fasiliti</label>
+                        <input type="text" name="nama_fasiliti" required class="input-field" placeholder="Contoh: Hospital Taiping / KK Tengkera">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Daerah</label>
+                        <input type="text" name="daerah" required class="input-field">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Negeri</label>
+                        <select name="negeri" required class="input-field">
+                            <option value="">Sila Pilih...</option>
+                            <option value="Johor">Johor</option><option value="Kedah">Kedah</option><option value="Kelantan">Kelantan</option><option value="Melaka">Melaka</option><option value="Negeri Sembilan">Negeri Sembilan</option><option value="Pahang">Pahang</option><option value="Perak">Perak</option><option value="Perlis">Perlis</option><option value="Pulau Pinang">Pulau Pinang</option><option value="Sabah">Sabah</option><option value="Sarawak">Sarawak</option><option value="Selangor">Selangor</option><option value="Terengganu">Terengganu</option><option value="WPKL">WP Kuala Lumpur</option><option value="WP Labuan">WP Labuan</option><option value="WP Putrajaya">WP Putrajaya</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Keluasan Lantai (m²)</label>
+                        <input type="number" name="keluasan_lantai" min="0" step="any" class="input-field" placeholder="Keluasan fasiliti">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Bilangan Staf Keseluruhan</label>
+                        <input type="number" name="bil_staf_keseluruhan" min="0" class="input-field" placeholder="Jumlah staf bertugas">
+                    </div>
+                </div>
+            </section>
+
+            <!-- KATEGORI 1, 2 & 3 (PEMBAKARAN MUDAH ALIH & KEKAL) -->
+            <section class="section-card">
+                <div class="section-header bg-amber-50">
+                    <h2 class="text-lg font-bold text-amber-900">Kategori 1, 2 & 3: Sumber Pembakaran Mudah Alih & Kekal (Scope 1)</h2>
+                    <p class="text-xs text-amber-700 mt-1">Gabungan data bahan api Lampiran 3 (REKA) dan sumber pembakaran pegun tambahan (Boiler & Fire Pump) mengikut Garis Panduan GHG KKM.</p>
+                </div>
+                <div class="overflow-x-auto border-t border-slate-200">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" class="w-1/4 text-left">Aset / Kenderaan</th>
+                                <th rowspan="2" class="w-24">Bilangan<br>(Unit)</th>
+                                <th colspan="4" class="border-b border-slate-300">Penggunaan Bahan Api (Bulanan)</th>
+                            </tr>
+                            <tr>
+                                <th class="w-28">Petrol (Liter)</th>
+                                <th class="w-28">Diesel (Liter)</th>
+                                <th class="w-28">LPG (kg)</th>
+                                <th class="w-28 bg-amber-100/50">Gas Asli / NG (mmbtu) *GHG</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Kategori 1 -->
+                            <tr><td colspan="6" class="table-group-header">Kategori 1: Kenderaan Jabatan (Mudah Alih)</td></tr>
+                            <tr><td class="font-medium px-4">Motosikal</td><td><input type="number" name="k1_moto_unit" class="input-cell" placeholder="0"></td><td><input type="number" name="k1_moto_petrol" class="input-cell" placeholder="0.0"></td><td><input type="number" disabled class="input-cell disabled-cell"></td><td><input type="number" disabled class="input-cell disabled-cell"></td><td><input type="number" disabled class="input-cell disabled-cell"></td></tr>
+                            <tr><td class="font-medium px-4">Kereta</td><td><input type="number" name="k1_ker_unit" class="input-cell" placeholder="0"></td><td><input type="number" name="k1_ker_petrol" class="input-cell" placeholder="0.0"></td><td><input type="number" name="k1_ker_diesel" class="input-cell" placeholder="0.0"></td><td><input type="number" disabled class="input-cell disabled-cell"></td><td><input type="number" disabled class="input-cell disabled-cell"></td></tr>
+                            <tr><td class="font-medium px-4">Pacuan empat (4) roda</td><td><input type="number" name="k1_4wd_unit" class="input-cell" placeholder="0"></td><td><input type="number" name="k1_4wd_petrol" class="input-cell" placeholder="0.0"></td><td><input type="number" name="k1_4wd_diesel" class="input-cell" placeholder="0.0"></td><td><input type="number" disabled class="input-cell disabled-cell"></td><td><input type="number" disabled class="input-cell disabled-cell"></td></tr>
+                            <tr><td class="font-medium px-4">Ambulan</td><td><input type="number" name="k1_amb_unit" class="input-cell" placeholder="0"></td><td><input type="number" name="k1_amb_petrol" class="input-cell" placeholder="0.0"></td><td><input type="number" name="k1_amb_diesel" class="input-cell" placeholder="0.0"></td><td><input type="number" disabled class="input-cell disabled-cell"></td><td><input type="number" disabled class="input-cell disabled-cell"></td></tr>
+                            <tr><td class="font-medium px-4">Van/SUV/MPV</td><td><input type="number" name="k1_van_unit" class="input-cell" placeholder="0"></td><td><input type="number" name="k1_van_petrol" class="input-cell" placeholder="0.0"></td><td><input type="number" name="k1_van_diesel" class="input-cell" placeholder="0.0"></td><td><input type="number" disabled class="input-cell disabled-cell"></td><td><input type="number" disabled class="input-cell disabled-cell"></td></tr>
+                            <tr><td class="font-medium px-4">Lori</td><td><input type="number" name="k1_lori_unit" class="input-cell" placeholder="0"></td><td><input type="number" name="k1_lori_petrol" class="input-cell" placeholder="0.0"></td><td><input type="number" name="k1_lori_diesel" class="input-cell" placeholder="0.0"></td><td><input type="number" disabled class="input-cell disabled-cell"></td><td><input type="number" disabled class="input-cell disabled-cell"></td></tr>
+                            <tr><td class="font-medium px-4">Lain-lain: Bas / Bot / Forklift</td><td><input type="number" name="k1_lain_unit" class="input-cell" placeholder="0"></td><td><input type="number" name="k1_lain_petrol" class="input-cell" placeholder="0.0"></td><td><input type="number" name="k1_lain_diesel" class="input-cell" placeholder="0.0"></td><td><input type="number" disabled class="input-cell disabled-cell"></td><td><input type="number" disabled class="input-cell disabled-cell"></td></tr>
+                            
+                            <!-- Kategori 2 -->
+                            <tr><td colspan="6" class="table-group-header border-t-2 border-slate-300">Kategori 2: Aset Jabatan (Mudah Alih)</td></tr>
+                            <tr><td class="font-medium px-4">Mesin potong rumput</td><td><input type="number" name="k2_rmpt_unit" class="input-cell" placeholder="0"></td><td><input type="number" name="k2_rmpt_petrol" class="input-cell" placeholder="0.0"></td><td><input type="number" name="k2_rmpt_diesel" class="input-cell" placeholder="0.0"></td><td><input type="number" disabled class="input-cell disabled-cell"></td><td><input type="number" disabled class="input-cell disabled-cell"></td></tr>
+                            <tr><td class="font-medium px-4">Gergaji bermotor</td><td><input type="number" name="k2_grgj_unit" class="input-cell" placeholder="0"></td><td><input type="number" name="k2_grgj_petrol" class="input-cell" placeholder="0.0"></td><td><input type="number" name="k2_grgj_diesel" class="input-cell" placeholder="0.0"></td><td><input type="number" disabled class="input-cell disabled-cell"></td><td><input type="number" disabled class="input-cell disabled-cell"></td></tr>
+                            <tr><td class="font-medium px-4">Mesin ULV</td><td><input type="number" name="k2_ulv_unit" class="input-cell" placeholder="0"></td><td><input type="number" name="k2_ulv_petrol" class="input-cell" placeholder="0.0"></td><td><input type="number" name="k2_ulv_diesel" class="input-cell" placeholder="0.0"></td><td><input type="number" disabled class="input-cell disabled-cell"></td><td><input type="number" disabled class="input-cell disabled-cell"></td></tr>
+                            <tr><td class="font-medium px-4">Mesin fogging</td><td><input type="number" name="k2_fog_unit" class="input-cell" placeholder="0"></td><td><input type="number" name="k2_fog_petrol" class="input-cell" placeholder="0.0"></td><td><input type="number" name="k2_fog_diesel" class="input-cell" placeholder="0.0"></td><td><input type="number" disabled class="input-cell disabled-cell"></td><td><input type="number" disabled class="input-cell disabled-cell"></td></tr>
+
+                            <!-- Kategori 3 -->
+                            <tr><td colspan="6" class="table-group-header border-t-2 border-slate-300">Kategori 3: Sumber Pembakaran Kekal (Pegun)</td></tr>
+                            <tr><td class="font-medium px-4">Genset Utama</td><td><input type="number" name="k3_gen_unit" class="input-cell" placeholder="0"></td><td><input type="number" name="k3_gen_petrol" class="input-cell" placeholder="0.0"></td><td><input type="number" name="k3_gen_diesel" class="input-cell" placeholder="0.0"></td><td><input type="number" disabled class="input-cell disabled-cell"></td><td><input type="number" disabled class="input-cell disabled-cell"></td></tr>
+                            <tr><td class="font-medium px-4">Genset mudah alih</td><td><input type="number" name="k3_genm_unit" class="input-cell" placeholder="0"></td><td><input type="number" name="k3_genm_petrol" class="input-cell" placeholder="0.0"></td><td><input type="number" name="k3_genm_diesel" class="input-cell" placeholder="0.0"></td><td><input type="number" disabled class="input-cell disabled-cell"></td><td><input type="number" disabled class="input-cell disabled-cell"></td></tr>
+                            <tr><td class="font-medium px-4">Dapur gas (Kafeteria/Klinik)</td><td><input type="number" name="k3_dpr_unit" class="input-cell" placeholder="0"></td><td><input type="number" disabled class="input-cell disabled-cell"></td><td><input type="number" disabled class="input-cell disabled-cell"></td><td><input type="number" name="k3_dpr_lpg" class="input-cell" placeholder="0.0"></td><td><input type="number" disabled class="input-cell disabled-cell"></td></tr>
+                            <tr class="bg-amber-50/40"><td class="font-medium px-4 text-amber-800">Dandang / Boiler (Keperluan GHG)</td><td><input type="number" name="k3_blr_unit" class="input-cell" placeholder="0"></td><td><input type="number" disabled class="input-cell disabled-cell"></td><td><input type="number" name="k3_blr_diesel" class="input-cell" placeholder="0.0"></td><td><input type="number" name="k3_blr_lpg" class="input-cell" placeholder="0.0"></td><td><input type="number" name="k3_blr_ng" class="input-cell bg-white border border-amber-200" placeholder="0.0"></td></tr>
+                            <tr class="bg-amber-50/40"><td class="font-medium px-4 text-amber-800">Pam Air Bomba / Fire Pump (Keperluan GHG)</td><td><input type="number" name="k3_fwp_unit" class="input-cell" placeholder="0"></td><td><input type="number" disabled class="input-cell disabled-cell"></td><td><input type="number" name="k3_fwp_diesel" class="input-cell" placeholder="0.0"></td><td><input type="number" disabled class="input-cell disabled-cell"></td><td><input type="number" disabled class="input-cell disabled-cell"></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- KATEGORI 4 & 5 (UTILITI & KONSUMABEL) -->
+            <section class="section-card">
+                <div class="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-slate-200">
+                    <div>
+                        <div class="bg-blue-50 px-6 py-4 border-b border-blue-100">
+                            <h2 class="text-lg font-bold text-blue-900">Kategori 4: Utiliti (Scope 2)</h2>
+                            <p class="text-xs text-blue-700 mt-1">Gunakan data dari Lampiran 5 (Reten Elektrik & Air).</p>
+                        </div>
+                        <div class="p-6 space-y-5">
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">Elektrik (Grid TNB/SESB/SEB)</label>
+                                <div class="flex shadow-sm rounded-md">
+                                    <input type="number" name="k4_elektrik_kwh" min="0" step="any" class="input-field rounded-r-none border-r-0" placeholder="0.00">
+                                    <span class="inline-flex items-center px-4 rounded-r-md border border-slate-300 bg-slate-100 text-slate-600 font-medium text-sm">kWh</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">Air (Syarikat Bekalan Tempatan)</label>
+                                <div class="flex shadow-sm rounded-md">
+                                    <input type="number" name="k4_air_m3" min="0" step="any" class="input-field rounded-r-none border-r-0" placeholder="0.00">
+                                    <span class="inline-flex items-center px-4 rounded-r-md border border-slate-300 bg-slate-100 text-slate-600 font-medium text-sm">m³</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="bg-emerald-50 px-6 py-4 border-b border-emerald-100">
+                            <h2 class="text-lg font-bold text-emerald-900">Kategori 5: Lain-lain (Scope 3)</h2>
+                            <p class="text-xs text-emerald-700 mt-1">Pembelian barang konsumabel bagi mengira pelepasan tidak langsung.</p>
+                        </div>
+                        <div class="p-6 space-y-5">
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">Kertas A4 (Pembelian / Penggunaan)</label>
+                                <div class="flex shadow-sm rounded-md">
+                                    <input type="number" name="k5_kertas_kg" min="0" step="any" class="input-field rounded-r-none border-r-0" placeholder="0.00">
+                                    <span class="inline-flex items-center px-4 rounded-r-md border border-slate-300 bg-slate-100 text-slate-600 font-medium text-sm">kg</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-2">Beg Plastik (Pembelian)</label>
+                                <div class="flex shadow-sm rounded-md">
+                                    <input type="number" name="k5_plastik_kg" min="0" step="any" class="input-field rounded-r-none border-r-0" placeholder="0.00">
+                                    <span class="inline-flex items-center px-4 rounded-r-md border border-slate-300 bg-slate-100 text-slate-600 font-medium text-sm">kg</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PELEPASAN BURONAN (GHG FUGITIVE EMISSIONS) -->
+            <section class="section-card">
+                <div class="bg-purple-50 px-6 py-4 border-b border-purple-200">
+                    <h2 class="text-lg font-bold text-purple-900">Pelepasan Buronan / Fugitive Emissions (GHG Scope 1 Keperluan Khas)</h2>
+                    <p class="text-sm text-purple-800 mt-1 font-medium">Berdasarkan Blueprint Pengurusan GHG Fasiliti Kesihatan (Jadual 3.5, 3.7, 3.11, 3.14, 3.18)</p>
+                </div>
+                
+                <!-- Refrigerants Table -->
+                <div class="overflow-x-auto border-b border-slate-200 bg-white">
+                    <div class="p-3 bg-slate-100 border-b border-slate-200 font-bold text-slate-700 uppercase tracking-wider text-xs">Peralatan Refrigeran (Simplified Material Balance Method)</div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" class="w-1/4 text-left">Peralatan (Equipment)</th>
+                                <th rowspan="2">Jenis Gas <span class="block text-[10px] font-normal capitalize">(Cth: R-32, R-134a, R-410A)</span></th>
+                                <th colspan="2" class="bg-purple-100/50 text-purple-900">Pemasangan (Installation)</th>
+                                <th class="bg-blue-100/50 text-blue-900">Operasi</th>
+                                <th colspan="3" class="bg-red-100/50 text-red-900">Pelupusan (Disposal / Retired)</th>
+                            </tr>
+                            <tr>
+                                <th class="w-20 bg-purple-50">Caj Baru (kg)</th>
+                                <th class="w-20 bg-purple-50">Kapasiti Baru (kg)</th>
+                                <th class="w-20 bg-blue-50">Top-up Semasa Servis (kg)</th>
+                                <th class="w-20 bg-red-50">Kapasiti Dilupus (kg)</th>
+                                <th class="w-20 bg-red-50">Gas Dipulihkan / Recovered (kg)</th>
+                                <th class="w-24 bg-red-100 font-bold text-red-950">Gas Tidak Dipulihkan / Unrecovered (kg)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-medium px-3 text-left">Bld. Air-Conditioners</td>
+                                <td><input type="text" name="ref_bac_gas" class="input-cell border border-slate-200" placeholder="Gas Type"></td>
+                                <td><input type="number" name="ref_bac_inst_charge" class="input-cell" placeholder="0.0"></td>
+                                <td><input type="number" name="ref_bac_inst_cap" class="input-cell" placeholder="0.0"></td>
+                                <td><input type="number" name="ref_bac_op_topup" class="input-cell font-bold text-blue-700 bg-blue-50/30" placeholder="0.0"></td>
+                                <td><input type="number" name="ref_bac_disp_cap" class="input-cell" placeholder="0.0"></td>
+                                <td><input type="number" name="ref_bac_disp_rec" class="input-cell" placeholder="0.0"></td>
+                                <td><input type="number" name="ref_bac_disp_unrec" class="input-cell font-bold text-red-700 bg-red-50" placeholder="0.0"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium px-3 text-left">Chillers</td>
+                                <td><input type="text" name="ref_chil_gas" class="input-cell border border-slate-200" placeholder="Gas Type"></td>
+                                <td><input type="number" name="ref_chil_inst_charge" class="input-cell" placeholder="0.0"></td>
+                                <td><input type="number" name="ref_chil_inst_cap" class="input-cell" placeholder="0.0"></td>
+                                <td><input type="number" name="ref_chil_op_topup" class="input-cell font-bold text-blue-700 bg-blue-50/30" placeholder="0.0"></td>
+                                <td><input type="number" name="ref_chil_disp_cap" class="input-cell" placeholder="0.0"></td>
+                                <td><input type="number" name="ref_chil_disp_rec" class="input-cell" placeholder="0.0"></td>
+                                <td><input type="number" name="ref_chil_disp_unrec" class="input-cell font-bold text-red-700 bg-red-50" placeholder="0.0"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium px-3 text-left">Refrigerators / Freezers</td>
+                                <td><input type="text" name="ref_frz_gas" class="input-cell border border-slate-200" placeholder="Gas Type"></td>
+                                <td><input type="number" name="ref_frz_inst_charge" class="input-cell" placeholder="0.0"></td>
+                                <td><input type="number" name="ref_frz_inst_cap" class="input-cell" placeholder="0.0"></td>
+                                <td><input type="number" name="ref_frz_op_topup" class="input-cell font-bold text-blue-700 bg-blue-50/30" placeholder="0.0"></td>
+                                <td><input type="number" name="ref_frz_disp_cap" class="input-cell" placeholder="0.0"></td>
+                                <td><input type="number" name="ref_frz_disp_rec" class="input-cell" placeholder="0.0"></td>
+                                <td><input type="number" name="ref_frz_disp_unrec" class="input-cell font-bold text-red-700 bg-red-50" placeholder="0.0"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium px-3 text-left">Cold Room</td>
+                                <td><input type="text" name="ref_cold_gas" class="input-cell border border-slate-200" placeholder="Gas Type"></td>
+                                <td><input type="number" name="ref_cold_inst_charge" class="input-cell" placeholder="0.0"></td>
+                                <td><input type="number" name="ref_cold_inst_cap" class="input-cell" placeholder="0.0"></td>
+                                <td><input type="number" name="ref_cold_op_topup" class="input-cell font-bold text-blue-700 bg-blue-50/30" placeholder="0.0"></td>
+                                <td><input type="number" name="ref_cold_disp_cap" class="input-cell" placeholder="0.0"></td>
+                                <td><input type="number" name="ref_cold_disp_rec" class="input-cell" placeholder="0.0"></td>
+                                <td><input type="number" name="ref_cold_disp_unrec" class="input-cell font-bold text-red-700 bg-red-50" placeholder="0.0"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium px-3 text-left">Vehicle Air-Conditioners</td>
+                                <td><input type="text" name="ref_vac_gas" class="input-cell border border-slate-200" placeholder="Gas Type"></td>
+                                <td><input type="number" disabled class="input-cell disabled-cell" title="Pre-charged by manufacturer"></td>
+                                <td><input type="number" disabled class="input-cell disabled-cell"></td>
+                                <td><input type="number" name="ref_vac_op_topup" class="input-cell font-bold text-blue-700 bg-blue-50/30" placeholder="0.0"></td>
+                                <td><input type="number" name="ref_vac_disp_cap" class="input-cell" placeholder="0.0"></td>
+                                <td><input type="number" name="ref_vac_disp_rec" class="input-cell" placeholder="0.0"></td>
+                                <td><input type="number" name="ref_vac_disp_unrec" class="input-cell font-bold text-red-700 bg-red-50" placeholder="0.0"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Fugitive Others -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-slate-200 bg-white">
+                    <div class="p-6">
+                        <h3 class="font-bold text-slate-800 uppercase tracking-wider text-xs border-b border-slate-200 pb-2 mb-4">Gas Perubatan (Penggunaan Bulanan)</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div><label class="text-xs font-semibold text-slate-600 block mb-1">Carbon Dioxide (kg)</label><input type="number" name="med_co2" class="input-field py-1.5" placeholder="0.0"></div>
+                            <div><label class="text-xs font-semibold text-slate-600 block mb-1">Nitrous Oxide (Liter)</label><input type="number" name="med_n2o" class="input-field py-1.5" placeholder="0.0"></div>
+                            <div><label class="text-xs font-semibold text-slate-600 block mb-1">Entonox (Liter)</label><input type="number" name="med_entonox" class="input-field py-1.5" placeholder="0.0"></div>
+                            <div><label class="text-xs font-semibold text-slate-600 block mb-1">Isoflurane (ml)</label><input type="number" name="med_isoflurane" class="input-field py-1.5" placeholder="0.0"></div>
+                            <div><label class="text-xs font-semibold text-slate-600 block mb-1">Sevoflurane (ml)</label><input type="number" name="med_sevoflurane" class="input-field py-1.5" placeholder="0.0"></div>
+                            <div><label class="text-xs font-semibold text-slate-600 block mb-1">Desflurane (ml)</label><input type="number" name="med_desflurane" class="input-field py-1.5" placeholder="0.0"></div>
+                        </div>
+
+                        <h3 class="font-bold text-slate-800 uppercase tracking-wider text-xs border-b border-slate-200 pb-2 mt-8 mb-4">Peralatan Pemadam Api (Discharge / Top-Up)</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div><label class="text-xs font-semibold text-slate-600 block mb-1">CO₂ (kg)</label><input type="number" name="fire_co2" class="input-field py-1.5" placeholder="0.0"></div>
+                            <div><label class="text-xs font-semibold text-slate-600 block mb-1">FM-200 (kg)</label><input type="number" name="fire_fm200" class="input-field py-1.5" placeholder="0.0"></div>
+                            <div><label class="text-xs font-semibold text-slate-600 block mb-1">Inergen (kg)</label><input type="number" name="fire_inergen" class="input-field py-1.5" placeholder="0.0"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <h3 class="font-bold text-slate-800 uppercase tracking-wider text-xs border-b border-slate-200 pb-2 mb-4">Peralatan SF6 (Top-up kg)</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div><label class="text-xs font-semibold text-slate-600 block mb-1">Switchgear</label><input type="number" name="sf6_switchgear" class="input-field py-1.5" placeholder="0.0"></div>
+                            <div><label class="text-xs font-semibold text-slate-600 block mb-1">Transformer</label><input type="number" name="sf6_transformer" class="input-field py-1.5" placeholder="0.0"></div>
+                            <div><label class="text-xs font-semibold text-slate-600 block mb-1">Circuit Breaker</label><input type="number" name="sf6_circuit" class="input-field py-1.5" placeholder="0.0"></div>
+                        </div>
+
+                        <h3 class="font-bold text-slate-800 uppercase tracking-wider text-xs border-b border-slate-200 pb-2 mt-8 mb-4">Rawatan Kumbahan (Sekiranya Berkenaan)</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between gap-4">
+                                <label class="text-xs font-semibold text-slate-600 w-1/2">Isipadu Air Sisa / Wastewater Vol. (m³)</label>
+                                <input type="number" name="sew_volume" class="input-field py-1.5 w-1/2" placeholder="0.0">
+                            </div>
+                            <div class="flex items-center justify-between gap-4">
+                                <label class="text-xs font-semibold text-slate-600 w-1/2">Purata Influent BOD (kg/m³)</label>
+                                <input type="number" name="sew_bod" class="input-field py-1.5 w-1/2" placeholder="0.0">
+                            </div>
+                            <div class="flex items-center justify-between gap-4">
+                                <label class="text-xs font-semibold text-slate-600 w-1/2">Jisim Enap Cemar / Sludge Mass (tonnes)</label>
+                                <input type="number" name="sew_sludge" class="input-field py-1.5 w-1/2" placeholder="0.0">
+                            </div>
+                            <div class="flex items-center justify-between gap-4">
+                                <label class="text-xs font-semibold text-slate-600 w-1/2">Metana Dipulihkan / Recovered (kg CH4)</label>
+                                <input type="number" name="sew_ch4_rec" class="input-field py-1.5 w-1/2" placeholder="0.0">
+                            </div>
+                            <div class="flex items-center justify-between gap-4">
+                                <label class="text-xs font-semibold text-slate-600 w-1/2">Populasi Tangki Septik (Orang)</label>
+                                <input type="number" name="sew_pop" class="input-field py-1.5 w-1/2" placeholder="0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- KATEGORI 6: PENGANGKUTAN STAF -->
+            <section class="section-card border-indigo-200">
+                <div class="section-header bg-indigo-50 border-indigo-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+                    <div>
+                        <h2 class="text-lg font-bold text-indigo-900">Kategori 6: Pengangkutan Staf (Rumah ke Pejabat Pergi/Balik)</h2>
+                        <p class="text-xs text-indigo-700 mt-1">Lengkapkan ruangan jadual ringkasan ini berdasarkan hasil tinjauan individu (Lampiran 6).</p>
+                    </div>
+                    <span class="text-xs bg-indigo-600 text-white px-3 py-1.5 rounded-full font-semibold shadow-sm whitespace-nowrap">Rekod Kompilasi</span>
+                </div>
+                
+                <!-- Ringkasan Table Kategori 6 -->
+                <div class="overflow-x-auto">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" class="w-1/4 text-left">Jenis Kenderaan</th>
+                                <th colspan="2" class="border-b border-slate-300">Bahan Api (Tandakan &check;)</th>
+                                <th rowspan="2" class="w-24">Bilangan (Unit)</th>
+                                <th rowspan="2" class="w-32">Jumlah Jarak (km)</th>
+                                <th rowspan="2" class="w-32">Liter Anggaran</th>
+                            </tr>
+                            <tr>
+                                <th class="w-20">Diesel</th>
+                                <th class="w-20">Petrol</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-medium px-4 text-left">Motosikal</td>
+                                <td><input type="checkbox" name="k6_moto_diesel" class="w-4 h-4 mx-auto block disabled-cell" disabled></td>
+                                <td><input type="checkbox" name="k6_moto_petrol" class="w-4 h-4 mx-auto block accent-teal-600"></td>
+                                <td><input type="number" name="k6_moto_unit" class="input-cell" placeholder="0"></td>
+                                <td><input type="number" name="k6_moto_km" class="input-cell" placeholder="0.0"></td>
+                                <td><input type="number" name="k6_moto_liter" class="input-cell" placeholder="0.0"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium px-4 text-left">Kereta</td>
+                                <td><input type="checkbox" name="k6_kereta_diesel" class="w-4 h-4 mx-auto block accent-teal-600"></td>
+                                <td><input type="checkbox" name="k6_kereta_petrol" class="w-4 h-4 mx-auto block accent-teal-600"></td>
+                                <td><input type="number" name="k6_kereta_unit" class="input-cell" placeholder="0"></td>
+                                <td><input type="number" name="k6_kereta_km" class="input-cell" placeholder="0.0"></td>
+                                <td><input type="number" name="k6_kereta_liter" class="input-cell" placeholder="0.0"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium px-4 text-left">Bas</td>
+                                <td><input type="checkbox" name="k6_bas_diesel" class="w-4 h-4 mx-auto block accent-teal-600"></td>
+                                <td><input type="checkbox" name="k6_bas_petrol" class="w-4 h-4 mx-auto block accent-teal-600"></td>
+                                <td><input type="number" name="k6_bas_unit" class="input-cell" placeholder="0"></td>
+                                <td><input type="number" name="k6_bas_km" class="input-cell" placeholder="0.0"></td>
+                                <td><input type="number" name="k6_bas_liter" class="input-cell" placeholder="0.0"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium px-4 text-left">Komuter / MRT / LRT dll.</td>
+                                <td colspan="2" class="bg-slate-50 text-[10px] text-slate-500 font-semibold tracking-widest text-center align-middle">Elektrik</td>
+                                <td><input type="number" name="k6_tren_unit" class="input-cell" placeholder="0"></td>
+                                <td><input type="number" name="k6_tren_km" class="input-cell" placeholder="0.0"></td>
+                                <td><input type="number" disabled class="input-cell disabled-cell"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium px-4 text-left">Bot</td>
+                                <td><input type="checkbox" name="k6_bot_diesel" class="w-4 h-4 mx-auto block accent-teal-600"></td>
+                                <td><input type="checkbox" name="k6_bot_petrol" class="w-4 h-4 mx-auto block accent-teal-600"></td>
+                                <td><input type="number" name="k6_bot_unit" class="input-cell" placeholder="0"></td>
+                                <td><input type="number" name="k6_bot_km" class="input-cell" placeholder="0.0"></td>
+                                <td><input type="number" name="k6_bot_liter" class="input-cell" placeholder="0.0"></td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium px-4 text-left flex flex-col gap-1">Lain-Lain (Nyatakan) <input type="text" name="k6_lain_desc" placeholder="..." class="border border-slate-300 w-full text-xs p-1 rounded font-normal"></td>
+                                <td><input type="checkbox" name="k6_lain_diesel" class="w-4 h-4 mx-auto block accent-teal-600"></td>
+                                <td><input type="checkbox" name="k6_lain_petrol" class="w-4 h-4 mx-auto block accent-teal-600"></td>
+                                <td><input type="number" name="k6_lain_unit" class="input-cell" placeholder="0"></td>
+                                <td><input type="number" name="k6_lain_km" class="input-cell" placeholder="0.0"></td>
+                                <td><input type="number" name="k6_lain_liter" class="input-cell" placeholder="0.0"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- LAMPIRAN 6: Kaji Selidik Individu (Sematkan secara Optional) -->
+                <div class="p-6 bg-white border-t border-slate-200">
+                    <details class="group bg-indigo-50/50 rounded-lg border border-indigo-100 overflow-hidden">
+                        <summary class="flex items-center font-bold cursor-pointer text-indigo-800 text-sm p-4 hover:bg-indigo-100 transition-colors">
+                            <svg class="w-5 h-5 mr-3 text-indigo-500 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            Buka Borang Kaji Selidik Staf Individu (Lampiran 6)
+                        </summary>
+                        <div class="p-6 border-t border-indigo-100 bg-white grid grid-cols-1 lg:grid-cols-2 gap-8 text-sm">
+                            
+                            <div class="space-y-4">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div><label class="block text-xs font-bold text-slate-600 mb-1">Nama</label><input type="text" name="surv_nama" class="input-field py-1.5"></div>
+                                    <div><label class="block text-xs font-bold text-slate-600 mb-1">Jawatan</label><input type="text" name="surv_jawatan" class="input-field py-1.5"></div>
+                                    <div><label class="block text-xs font-bold text-slate-600 mb-1">Umur</label><input type="number" name="surv_umur" class="input-field py-1.5"></div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-600 mb-1">Jantina</label>
+                                        <select name="surv_jantina" class="input-field py-1.5">
+                                            <option value="">Sila Pilih...</option><option value="Lelaki">Lelaki</option><option value="Perempuan">Perempuan</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <hr class="border-slate-200">
+                                <div>
+                                    <p class="font-bold text-slate-800 mb-2">1a. Pilih SATU jenis pengangkutan UTAMA ke tempat kerja:</p>
+                                    <select name="surv_q1a" class="input-field py-2 bg-slate-50 border-indigo-200 focus:border-indigo-500 focus:ring-indigo-500">
+                                        <option value="">- Pilih Pengangkutan -</option>
+                                        <option value="Kereta Diesel">Kereta Diesel</option>
+                                        <option value="Kereta Petrol">Kereta Petrol</option>
+                                        <option value="EV berkuasa Bateri">EV berkuasa Bateri Kereta</option>
+                                        <option value="Hibrid Kereta">Hibrid Kereta (mengecas sendiri)</option>
+                                        <option value="PHEV">Kenderaan Elektrik Hibrid Pemalam Kereta (PHEV)</option>
+                                        <option value="Bas Sahaja">Bas Sahaja</option>
+                                        <option value="Tren">Tren (Komuter/LRT/MRT/Putra line)</option>
+                                        <option value="Motosikal">Motosikal</option>
+                                        <option value="Perkongsian Pemandu">Perkongsian kereta memandu bergilir</option>
+                                        <option value="Perkongsian Bukan Pemandu">Perkongsian kereta (bukan pemandu)</option>
+                                        <option value="Berjalan sahaja">Berjalan sahaja</option>
+                                        <option value="Kitaran sahaja">Kitaran (Basikal) sahaja</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-slate-800 mb-2">1b. Jenis pengangkutan ALTERNATIF ke tempat kerja:</p>
+                                    <select name="surv_q1b" class="input-field py-2 bg-slate-50 border-indigo-200 focus:border-indigo-500 focus:ring-indigo-500">
+                                        <option value="">- Pilih Pengangkutan Alternatif -</option>
+                                        <option value="Kereta Diesel">Kereta Diesel</option>
+                                        <option value="Kereta Petrol">Kereta Petrol</option>
+                                        <option value="EV berkuasa Bateri">EV berkuasa Bateri Kereta</option>
+                                        <option value="Hibrid Kereta">Hibrid Kereta (mengecas sendiri)</option>
+                                        <option value="PHEV">Kenderaan Elektrik Hibrid Pemalam Kereta (PHEV)</option>
+                                        <option value="Bas Sahaja">Bas Sahaja</option>
+                                        <option value="Tren">Tren (Komuter/LRT/MRT/Putra line)</option>
+                                        <option value="Motosikal">Motosikal</option>
+                                        <option value="Perkongsian Pemandu">Perkongsian kereta memandu bergilir</option>
+                                        <option value="Perkongsian Bukan Pemandu">Perkongsian kereta (bukan pemandu)</option>
+                                        <option value="Berjalan sahaja">Berjalan sahaja</option>
+                                        <option value="Kitaran sahaja">Kitaran (Basikal) sahaja</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="space-y-5">
+                                <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                                    <label class="block font-bold text-slate-800 mb-2">2. Berapa jauh perjalanan anda (sehala) dari rumah ke Pejabat? (km)</label>
+                                    <input type="number" name="surv_q2" step="0.1" class="input-field max-w-[200px]" placeholder="Jarak (km)">
+                                </div>
+                                <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                                    <label class="block font-bold text-slate-800 mb-2">3. Berapa kali seminggu, secara purata, anda berulang-alik ke Pejabat?</label>
+                                    <input type="number" name="surv_q3" class="input-field max-w-[200px]" placeholder="Bilangan hari">
+                                </div>
+                                <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                                    <label class="block font-bold text-slate-800 mb-2">4. Adakah anda kerap bekerja dari rumah (WFH)?</label>
+                                    <div class="flex items-center gap-4">
+                                        <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="surv_q4" value="Ya" class="w-4 h-4 text-indigo-600 focus:ring-indigo-500"> <span class="text-sm">Ya</span></label>
+                                        <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="surv_q4" value="Tidak" class="w-4 h-4 text-indigo-600 focus:ring-indigo-500"> <span class="text-sm">Tidak</span></label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </details>
+                </div>
+            </section>
+
+            <!-- ACTION BUTTONS -->
+            <div class="flex items-center justify-between pt-6 border-t border-slate-300">
+                <p class="text-xs text-slate-400 font-medium">Borang ini menjana fail format JSON yang sedia untuk dimuat naik ke pengkalan data.</p>
+                <div class="flex space-x-3">
+                    <button type="reset" class="px-5 py-2.5 border border-slate-300 rounded text-slate-600 hover:bg-slate-100 hover:text-slate-800 transition font-bold text-sm shadow-sm">Set Semula (Reset)</button>
+                    <button type="submit" class="px-6 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded shadow-md transition font-bold text-sm flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        Simpan & Eksport Data
+                    </button>
+                </div>
+            </div>
+            
+            <div id="successMsg" class="hidden mt-6 p-4 bg-teal-50 text-teal-800 border border-teal-200 rounded-lg text-center shadow-sm flex items-center justify-center gap-3">
+                <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span class="font-semibold text-sm">Data berjaya dieksport! Sila semak fail muat turun anda.</span>
+            </div>
+
+        </form>
+    </main>
+
+    <script>
+        document.getElementById('ucatForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const dataObj = {};
+            
+            // Proses checkboxes/radio buttons secara spesifik
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                dataObj[cb.name] = cb.checked;
+            });
+            const q4Radio = document.querySelector('input[name="surv_q4"]:checked');
+            dataObj['surv_q4'] = q4Radio ? q4Radio.value : "";
+            
+            // Proses fields lain
+            formData.forEach((value, key) => {
+                // Skip jika sudah dikendalikan (checkbox & radio)
+                if (document.querySelector(`input[name="${key}"]`)?.type === 'checkbox') return;
+                if (key === 'surv_q4') return;
+
+                if(value !== "") {
+                    // Cuba parse sebagai nombor, jika gagal simpan sebagai string
+                    const numParsed = parseFloat(value);
+                    dataObj[key] = isNaN(numParsed) ? value : numParsed;
+                } else {
+                    // Set 0 jika input jenis number tapi kosong, string biarkan kosong
+                    const inputElement = document.querySelector(`[name="${key}"]`);
+                    if(inputElement && inputElement.type === 'number') {
+                        dataObj[key] = 0;
+                    } else {
+                        dataObj[key] = "";
+                    }
+                }
+            });
+
+            // Metadata tambahan
+            dataObj['timestamp'] = new Date().toISOString();
+            dataObj['format_version'] = "UCAT_v3.0_StrictMatrix";
+
+            // Eksport ke format fail JSON
+            const dataStr = JSON.stringify(dataObj, null, 2);
+            const blob = new Blob([dataStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            
+            const facName = dataObj['nama_fasiliti'] ? dataObj['nama_fasiliti'].replace(/\s+/g, '_') : 'Fasiliti_KKM';
+            const month = dataObj['bulan_tahun'] || 'YYYY-MM';
+            a.download = `Data_UCAT_${facName}_${month}.json`;
+            
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            const successMsg = document.getElementById('successMsg');
+            successMsg.classList.remove('hidden');
+            setTimeout(() => {
+                successMsg.classList.add('hidden');
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
